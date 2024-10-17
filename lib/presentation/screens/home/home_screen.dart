@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             IconButton.outlined(
                 onPressed: () {
-                  // context.push('/cards');
+                  context.push('/cards');
                 },
                 icon: const Icon(
                   Icons.open_in_new_sharp,

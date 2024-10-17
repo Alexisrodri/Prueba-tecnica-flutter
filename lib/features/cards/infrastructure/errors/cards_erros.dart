@@ -1,0 +1,1 @@
+class CardNotFound implements Exception {}

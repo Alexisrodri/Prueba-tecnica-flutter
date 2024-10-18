@@ -18,9 +18,9 @@ class CardsDatasourcesImpl extends CardsDatasource {
   Future<Card> getCardById(String id) async {
     try {
       final response = await dio.get('cardinfo.php?id=$id');
-      // print(response.data);
+      // print('response::${response.data}');
       final card = CardMapper.jsonToEntities(response.data);
-      print('Cardddd::$card');
+      // print('Cardddd::$card');
       return card.map((card) => card).first;
     } on DioException catch (e) {
       if (e.response!.statusCode == 404) throw CardNotFound();

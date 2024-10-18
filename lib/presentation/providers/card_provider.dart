@@ -21,6 +21,7 @@ class CardNotifier extends StateNotifier<CardState> {
   Future<void> loadCard() async {
     try {
       final card = await cardRepository.getCardById(state.id);
+      // print(card);
       state = state.copyWith(
         isLoading: false,
         card: card,

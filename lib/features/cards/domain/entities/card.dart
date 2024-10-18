@@ -18,11 +18,16 @@ class Card {
   String frameType;
   String desc;
   String race;
-  String archetype;
+  String? archetype;
   String ygoprodeckUrl;
   List<CardSet> cardSets;
   List<CardImage> cardImages;
   List<CardPrice> cardPrices;
+  List<String>? typeline;
+  int? atk;
+  int? def;
+  int? level;
+  String? attribute;
 
   Card({
     required this.id,
@@ -32,11 +37,16 @@ class Card {
     required this.frameType,
     required this.desc,
     required this.race,
-    required this.archetype,
+    this.archetype,
     required this.ygoprodeckUrl,
     required this.cardSets,
     required this.cardImages,
     required this.cardPrices,
+    this.typeline,
+    this.atk,
+    this.def,
+    this.level,
+    this.attribute,
   });
 
   factory Card.fromJson(Map<String, dynamic> json) => Card(
@@ -55,6 +65,13 @@ class Card {
             json["card_images"].map((x) => CardImage.fromJson(x))),
         cardPrices: List<CardPrice>.from(
             json["card_prices"].map((x) => CardPrice.fromJson(x))),
+        typeline: json["typeline"] == null
+            ? []
+            : List<String>.from(json["typeline"]!.map((x) => x)),
+        atk: json["atk"],
+        def: json["def"],
+        level: json["level"],
+        attribute: json["attribute"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,6 +87,12 @@ class Card {
         "card_sets": List<dynamic>.from(cardSets.map((x) => x.toJson())),
         "card_images": List<dynamic>.from(cardImages.map((x) => x.toJson())),
         "card_prices": List<dynamic>.from(cardPrices.map((x) => x.toJson())),
+        "typeline":
+            typeline == null ? [] : List<dynamic>.from(typeline!.map((x) => x)),
+        "atk": atk,
+        "def": def,
+        "level": level,
+        "attribute": attribute,
       };
 }
 

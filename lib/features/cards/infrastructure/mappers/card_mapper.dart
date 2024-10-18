@@ -14,8 +14,12 @@ class CardMapper {
         frameType: json['frameType'],
         desc: json['desc'],
         race: json['race'],
-        archetype: json['archetype'] ?? '',
-        ygoprodeckUrl: json['ygoprodeck_url'] ?? '',
+        attribute: json['attribute'],
+        archetype: json['archetype'],
+        atk: json['atk'],
+        def: json['def'],
+        level: json['level'],
+        ygoprodeckUrl: json['ygoprodeck_url'],
         cardSets: json['card_sets'] != null
             ? (json['card_sets'] as List<dynamic>)
                 .map((x) => CardSet.fromJson(x))

@@ -1,12 +1,12 @@
 import 'package:prueba_tecnica/features/cards/domain/domain.dart';
 
 class CardMapper {
-  static List<Card> jsonToEntities(Map<String, dynamic> json) {
+  static List<CardResponse> jsonToEntities(Map<String, dynamic> json) {
     final List<dynamic> cardsJson = json['data'] ?? [];
     return cardsJson.map((card) => jsonToEntity(card)).toList();
   }
 
-  static Card jsonToEntity(Map<String, dynamic> json) => Card(
+  static CardResponse jsonToEntity(Map<String, dynamic> json) => CardResponse(
         id: json['id'],
         name: json['name'],
         type: json['type'],

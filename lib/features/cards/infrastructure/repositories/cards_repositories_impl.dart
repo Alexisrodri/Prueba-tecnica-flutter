@@ -7,12 +7,12 @@ class CardsRepositoriesImpl extends CardsRepositories {
   CardsRepositoriesImpl(this.datasource);
 
   @override
-  Future<Card> getCardById(String id) {
+  Future<CardResponse> getCardById(String id) {
     return datasource.getCardById(id);
   }
 
   @override
-  Future<List<Card>> getCardsByPage(
+  Future<List<CardResponse>> getCardsByPage(
       {int limit = 10, int offset = 0, String? archetype = ''}) {
     return datasource.getCardsByPage(limit: limit, offset: offset);
   }

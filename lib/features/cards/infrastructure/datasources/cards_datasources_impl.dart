@@ -17,7 +17,7 @@ class CardsDatasourcesImpl extends CardsDatasource {
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?id=84962466
 
   @override
-  Future<Card> getCardById(String id) async {
+  Future<CardResponse> getCardById(String id) async {
     try {
       final response = await dio.get('cardinfo.php?id=$id');
       // print('response::${response.data}');
@@ -34,7 +34,7 @@ class CardsDatasourcesImpl extends CardsDatasource {
   }
 
   @override
-  Future<List<Card>> getCardsByPage({
+  Future<List<CardResponse>> getCardsByPage({
     int limit = 10,
     int offset = 0,
     String? archetype,
@@ -44,7 +44,7 @@ class CardsDatasourcesImpl extends CardsDatasource {
 
     final response = await dio.get(url);
 
-    final List<Card> cards = [];
+    final List<CardResponse> cards = [];
 
     if (response.data != null && response.data['data'] != null) {
       for (final card in response.data['data']) {

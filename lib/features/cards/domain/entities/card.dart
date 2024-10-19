@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final card = cardFromJson(jsonString);
+//     final Card = cardFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Card> cardFromJson(String str) =>
-    List<Card>.from(json.decode(str).map((x) => Card.fromJson(x)));
+List<CardResponse> cardFromJson(String str) => List<CardResponse>.from(
+    json.decode(str).map((x) => CardResponse.fromJson(x)));
 
-String cardToJson(List<Card> data) =>
+String cardToJson(List<CardResponse> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Card {
+class CardResponse {
   int id;
   String name;
   String type;
@@ -29,7 +29,7 @@ class Card {
   int? level;
   String? attribute;
 
-  Card({
+  CardResponse({
     required this.id,
     required this.name,
     required this.type,
@@ -49,7 +49,7 @@ class Card {
     this.attribute,
   });
 
-  factory Card.fromJson(Map<String, dynamic> json) => Card(
+  factory CardResponse.fromJson(Map<String, dynamic> json) => CardResponse(
         id: json["id"],
         name: json["name"],
         type: json["type"],
@@ -60,11 +60,11 @@ class Card {
         archetype: json["archetype"],
         ygoprodeckUrl: json["ygoprodeck_url"],
         cardSets: List<CardSet>.from(
-            json["card_sets"].map((x) => CardSet.fromJson(x))),
+            json["Card_sets"].map((x) => CardSet.fromJson(x))),
         cardImages: List<CardImage>.from(
-            json["card_images"].map((x) => CardImage.fromJson(x))),
+            json["Card_images"].map((x) => CardImage.fromJson(x))),
         cardPrices: List<CardPrice>.from(
-            json["card_prices"].map((x) => CardPrice.fromJson(x))),
+            json["Card_prices"].map((x) => CardPrice.fromJson(x))),
         typeline: json["typeline"] == null
             ? []
             : List<String>.from(json["typeline"]!.map((x) => x)),
@@ -125,14 +125,14 @@ class CardImage {
 }
 
 class CardPrice {
-  String cardmarketPrice;
+  String CardmarketPrice;
   String tcgplayerPrice;
   String ebayPrice;
   String amazonPrice;
   String coolstuffincPrice;
 
   CardPrice({
-    required this.cardmarketPrice,
+    required this.CardmarketPrice,
     required this.tcgplayerPrice,
     required this.ebayPrice,
     required this.amazonPrice,
@@ -140,7 +140,7 @@ class CardPrice {
   });
 
   factory CardPrice.fromJson(Map<String, dynamic> json) => CardPrice(
-        cardmarketPrice: json["cardmarket_price"],
+        CardmarketPrice: json["Cardmarket_price"],
         tcgplayerPrice: json["tcgplayer_price"],
         ebayPrice: json["ebay_price"],
         amazonPrice: json["amazon_price"],
@@ -148,7 +148,7 @@ class CardPrice {
       );
 
   Map<String, dynamic> toJson() => {
-        "cardmarket_price": cardmarketPrice,
+        "Cardmarket_price": CardmarketPrice,
         "tcgplayer_price": tcgplayerPrice,
         "ebay_price": ebayPrice,
         "amazon_price": amazonPrice,

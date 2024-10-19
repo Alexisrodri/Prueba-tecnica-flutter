@@ -3,7 +3,7 @@ import 'package:prueba_tecnica/features/cards/domain/entities/card.dart'
     as card_data;
 
 class CardsCardview extends StatelessWidget {
-  final card_data.Card card;
+  final card_data.CardResponse card;
 
   const CardsCardview({super.key, required this.card});
 

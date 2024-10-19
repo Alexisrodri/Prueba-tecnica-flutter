@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-import '../presentation/providers/providers.dart';
-
 class CardDetails extends StatelessWidget {
   const CardDetails({
     super.key,
-    required this.cardState,
   });
-
-  final CardState cardState;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -23,13 +18,16 @@ class CardDetails extends StatelessWidget {
               child: SizedBox(
                 height: 350,
                 width: 350,
-                child: _ImageGallery(
-                    images: cardState.card!.cardImages.first.imageUrl),
+                child: Text('sizebox'),
+                //  _ImageGallery(
+                //     images: cardState.card!.cardImages.first.imageUrl),
               ),
             ),
-            const SizedBox(height: 20),
-            CardInfo(cardState: cardState),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
+            // CardInfo(
+            // 	cardState: cardState
+            // 	),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -63,38 +61,38 @@ class _ImageGallery extends StatelessWidget {
 }
 
 class CardInfo extends StatelessWidget {
-  final CardState cardState;
-
-  const CardInfo({super.key, required this.cardState});
+  const CardInfo({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          cardState.card!.name,
+          'Name Card',
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'YuGiOh',
             fontSize: 25,
           ),
         ),
-        const SizedBox(
+        SizedBox(
           height: 10,
         ),
-        GridInfoCard(cardState: cardState),
-        const Text(
+        // GridInfoCard(cardState: cardState),
+        Text(
           'Description',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         Text(
-          cardState.card!.desc,
-          style: const TextStyle(
+          'description',
+          style: TextStyle(
             fontSize: 20,
           ),
         ),
@@ -108,10 +106,10 @@ class CardInfo extends StatelessWidget {
 class GridInfoCard extends StatelessWidget {
   const GridInfoCard({
     super.key,
-    required this.cardState,
+    // required this.cardState,
   });
 
-  final CardState cardState;
+  // final CardState cardState;
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +124,8 @@ class GridInfoCard extends StatelessWidget {
       ),
       children: [
         // Tipo
-        GridTile(
-          header: const Text(
+        const GridTile(
+          header: Text(
             'Type',
             style: TextStyle(
               fontSize: 20,
@@ -135,163 +133,166 @@ class GridInfoCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.library_books_rounded,
               ),
-              const SizedBox(width: 5),
-              Text(
-                cardState.card!.type,
-                style: const TextStyle(
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
+              SizedBox(width: 5),
+              // Text(
+              //   cardState.card!.type,
+              //   style: const TextStyle(
+              //     fontStyle: FontStyle.italic,
+              //   ),
+              // ),
             ],
           ),
         ),
         // Arquetipo (solo si existe)
-        if (cardState.card!.archetype != null)
-          GridTile(
-            header: const Text(
-              'Archetype',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            child: Row(
-              children: [
-                Image.network(
-                  'https://images.ygoprodeck.com/images/cards/${cardState.card!.archetype}.jpg',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                  scale: 1.0,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(
-                      Icons.science_rounded,
-                    );
-                  },
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  cardState.card!.archetype!,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        // if (cardState.card!.archetype != null)
+        //   GridTile(
+        //     header: const Text(
+        //       'Archetype',
+        //       style: TextStyle(
+        //         fontSize: 20,
+        //       ),
+        //     ),
+        //     child: Row(
+        //       children: [
+        //         Image.network(
+        //           'https://images.ygoprodeck.com/images/cards/${cardState.card!.archetype}.jpg',
+        //           width: 30,
+        //           height: 30,
+        //           fit: BoxFit.cover,
+        //           scale: 1.0,
+        //           errorBuilder: (context, error, stackTrace) {
+        //             return const Icon(
+        //               Icons.science_rounded,
+        //             );
+        //           },
+        //         ),
+        const SizedBox(width: 5),
+        //       Text(
+        //         cardState.card!.archetype!,
+        //         style: const TextStyle(
+        //           fontSize: 18,
+        //           fontStyle: FontStyle.italic,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         // Tipo/Raza
+        // GridTile(
+        //   header: const Text(
+        //     'Race/Type',
+        //     style: TextStyle(
+        //       fontSize: 20,
+        //     ),
+        //   ),
+        //   child: Row(
+        //     children: [
+        //       Image.network(
+        //         'https://images.ygoprodeck.com/images/cards/icons/race/${cardState.card!.race}.png',
+        //         width: 30,
+        //         scale: 1.0,
+        //       ),
+        //       const SizedBox(width: 5),
+        //       Text(
+        //         cardState.card!.race,
+        //         style: const TextStyle(
+        //           fontSize: 20,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // Atributo (solo si existe)
+        // if (cardState.card!.attribute != null)
+        //   GridTile(
+        //     header: const Text(
+        //       'Attribute',
+        //       style: TextStyle(color: Colors.white),
+        //     ),
+        //     child: Row(
+        //       children: [
+        //         Image.network(
+        //           'https://images.ygoprodeck.com/images/cards/${cardState.card!.attribute}.jpg',
+        //           width: 30,
+        //           height: 30,
+        //           scale: 1.0,
+        //           fit: BoxFit.cover,
+        //         ),
+        //         const SizedBox(width: 5),
+        //         Text(
+        //           cardState.card!.attribute!,
+        //           style: const TextStyle(
+        //             fontSize: 22,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // Level/Rank (solo si existe)
+        // if (cardState.card!.level != null)
         GridTile(
           header: const Text(
-            'Race/Type',
-            style: TextStyle(
-              fontSize: 20,
-            ),
+            'Level/Rank',
+            style: TextStyle(color: Colors.white),
           ),
           child: Row(
             children: [
               Image.network(
-                'https://images.ygoprodeck.com/images/cards/icons/race/${cardState.card!.race}.png',
+                'https://ygoprodeck.com/wp-content/uploads/2017/01/level.png',
                 width: 30,
+                height: 30,
                 scale: 1.0,
+                fit: BoxFit.cover,
               ),
               const SizedBox(width: 5),
-              Text(
-                cardState.card!.race,
-                style: const TextStyle(
-                  fontSize: 20,
+              const Text(
+                // '${cardState.card!.level}',
+                'estadisticas',
+                style: TextStyle(
+                  fontSize: 25,
                 ),
               ),
             ],
           ),
         ),
-        // Atributo (solo si existe)
-        if (cardState.card!.attribute != null)
-          GridTile(
-            header: const Text(
-              'Attribute',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: Row(
-              children: [
-                Image.network(
-                  'https://images.ygoprodeck.com/images/cards/${cardState.card!.attribute}.jpg',
-                  width: 30,
-                  height: 30,
-                  scale: 1.0,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  cardState.card!.attribute!,
-                  style: const TextStyle(
-                    fontSize: 22,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        // Level/Rank (solo si existe)
-        if (cardState.card!.level != null)
-          GridTile(
-            header: const Text(
-              'Level/Rank',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: Row(
-              children: [
-                Image.network(
-                  'https://ygoprodeck.com/wp-content/uploads/2017/01/level.png',
-                  width: 30,
-                  height: 30,
-                  scale: 1.0,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  '${cardState.card!.level}',
-                  style: const TextStyle(
-                    fontSize: 25,
-                  ),
-                ),
-              ],
-            ),
-          ),
         // ATK (solo si existe)
-        if (cardState.card!.atk != null)
-          GridTile(
-              header: const Text(
-                'ATK',
-                style: TextStyle(color: Colors.white),
-              ),
-              child: Row(
-                children: [
-                  StatWidget(
-                    value: cardState.card!.atk!,
-                    icon: Symbols.swords,
-                    color: Colors.amber,
-                  ),
-                ],
-              )),
-        if (cardState.card!.def != null)
-          GridTile(
-            header: const Text(
-              'DEF',
+        // if (cardState.card!.atk != null)
+        const GridTile(
+            header: Text(
+              'ATK',
               style: TextStyle(color: Colors.white),
             ),
             child: Row(
               children: [
-                StatWidget(
-                  // label: 'DEF',
-                  value: cardState.card!.def!,
-                  icon: Symbols.swords,
-                  color: Colors.amber,
-                ),
+                Text('estadisticas')
+                // StatWidget(
+                //   value: cardState.card!.atk!,
+                //   icon: Symbols.swords,
+                //   color: Colors.amber,
+                // ),
               ],
-            ),
+            )),
+        // if (cardState.card!.def != null)
+        const GridTile(
+          header: Text(
+            'DEF',
+            style: TextStyle(color: Colors.white),
           ),
+          child: Row(
+            children: [
+              Text('estadisticas')
+              // StatWidget(
+              //   // label: 'DEF',
+              //   value: cardState.card!.def!,
+              //   icon: Symbols.swords,
+              //   color: Colors.amber,
+              // ),
+            ],
+          ),
+        ),
       ],
     );
   }

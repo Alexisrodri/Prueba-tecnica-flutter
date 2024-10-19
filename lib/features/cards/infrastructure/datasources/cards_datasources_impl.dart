@@ -39,10 +39,8 @@ class CardsDatasourcesImpl extends CardsDatasource {
     int offset = 0,
     String? archetype,
   }) async {
-    final url = 'cardinfo.php?num=$limit&offset=$offset'
-        '${archetype != null && archetype.isNotEmpty ? '&archetype=$archetype' : ''}';
-
-    final response = await dio.get(url);
+    final response = await dio.get('cardinfo.php?num=$limit&offset=$offset'
+        '${archetype != null && archetype.isNotEmpty ? '&archetype=$archetype' : ''}');
 
     final List<Card> cards = [];
 

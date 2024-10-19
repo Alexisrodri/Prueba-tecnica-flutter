@@ -68,7 +68,7 @@ class _CardsViewState extends ConsumerState<_CardsView> {
     scrollController.addListener(() {
       if ((scrollController.position.pixels + 400) >=
           scrollController.position.maxScrollExtent) {
-        ref.read(cardsProvider(''));
+        ref.read(cardsProvider.notifier).loadNextPage();
       }
     });
   }
@@ -81,7 +81,7 @@ class _CardsViewState extends ConsumerState<_CardsView> {
 
   @override
   Widget build(BuildContext context) {
-    final cardsState = ref.watch(cardsProvider(''));
+    final cardsState = ref.watch(cardsProvider);
 
     return Padding(
       padding: const EdgeInsets.all(15),

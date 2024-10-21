@@ -15,7 +15,6 @@ class CardsDatasourcesImpl extends CardsDatasource {
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?&num=10&offset=0#
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?id=84962466
-  // https://ygoprodeck.com/api/elastic/card_search.php?&sort=views&num=14&offset=0
 
   @override
   Future<Cards> getCardById(String id) async {
@@ -63,6 +62,31 @@ class CardsDatasourcesImpl extends CardsDatasource {
           )
           .toList();
       return archetype;
+    } on DioException catch (e) {
+      if (e.response!.statusCode == 404) throw CardNotFound();
+      throw Exception();
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<List<Cards>> getBanListCards({
+    int limit = 10,
+    int offset = 0,
+  }) async {
+    try {
+      final url = 'cardinfo.php?sort=view&num=$limit&offset=$offset}';
+
+      final response = await dio.get(url);
+      final List<Cards> cards = [];
+
+      if (response.data != null && response.data['data'] != null) {
+        for (final card in response.data['data']) {
+          cards.add(CardMapper.jsonToEntity(card));
+        }
+      }
+      return cards;
     } on DioException catch (e) {
       if (e.response!.statusCode == 404) throw CardNotFound();
       throw Exception();

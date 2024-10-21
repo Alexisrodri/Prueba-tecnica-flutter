@@ -11,7 +11,7 @@ class CardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cardState = ref.watch(cardProvider(cardId));
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: const Color(0xFFC2B4A7),
       appBar: AppBar(),
       body: cardState.isLoading
           ? const FullScreenLoader()

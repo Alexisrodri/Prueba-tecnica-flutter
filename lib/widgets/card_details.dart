@@ -171,8 +171,10 @@ class GridInfoCard extends StatelessWidget {
                 const SizedBox(width: 5),
                 Text(
                   cardState.card!.archetype!,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -209,7 +211,9 @@ class GridInfoCard extends StatelessWidget {
           GridTile(
             header: const Text(
               'Attribute',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             child: Row(
               children: [

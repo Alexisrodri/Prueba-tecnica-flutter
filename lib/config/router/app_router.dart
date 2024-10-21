@@ -8,6 +8,10 @@ final router = GoRouter(initialLocation: '/', routes: [
     builder: (context, state) => const HomeScreen(),
   ),
   GoRoute(
+    path: '/cards-banlist',
+    builder: (context, state) => const CardsBandlist(),
+  ),
+  GoRoute(
     path: '/cards',
     builder: (context, state) => const CardsScreen(),
     routes: [

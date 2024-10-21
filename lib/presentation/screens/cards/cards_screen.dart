@@ -13,41 +13,18 @@ class CardsScreen extends ConsumerWidget {
     final selectedArchetype = ref.watch(selectedArchetypeProvider);
 
     return Scaffold(
+      backgroundColor: const Color(0xFFC2B4A7),
       appBar: AppBar(
-        title: const Text('Cartas'),
+        title: const Text('Catálogo de cartas'),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFC2B4A7),
       ),
       body: const Column(
         children: [
           Expanded(child: _CardsView()),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor:
-            selectedArchetype != null ? Colors.red : Colors.lightBlue,
-        icon: Icon(selectedArchetype != null
-            ? Icons.delete_forever
-            : Icons.filter_list_alt),
-        label: Text(selectedArchetype != null ? 'Eliminar filtro' : 'Filtrar'),
-        onPressed: () {
-          if (selectedArchetype != null) {
-            _removeFilter(ref);
-          } else {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return DraggableScrollableSheet(
-                  expand: true,
-                  initialChildSize: 1.0,
-                  builder: (context, scrollController) {
-                    return _ArchetypesFilter(
-                        scrollController: scrollController);
-                  },
-                );
-              },
-            );
-          }
-        },
-      ),
+      floatingActionButton: FilterFAB(selectedArchetype: selectedArchetype),
     );
   }
 }
@@ -110,6 +87,45 @@ void updateArchetype(WidgetRef ref, String archetypeName) {
   ref.read(selectedArchetypeProvider.notifier).state = archetypeName;
 
   ref.read(cardsProvider(archetypeName).notifier).loadNextPage();
+}
+
+class FilterFAB extends ConsumerWidget {
+  const FilterFAB({
+    super.key,
+    required this.selectedArchetype,
+  });
+
+  final String? selectedArchetype;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FloatingActionButton.extended(
+      backgroundColor:
+          selectedArchetype != null ? Colors.red : Colors.lightBlue,
+      icon: Icon(selectedArchetype != null
+          ? Icons.delete_forever
+          : Icons.filter_list_alt),
+      label: Text(selectedArchetype != null ? 'Eliminar filtro' : 'Filtrar'),
+      onPressed: () {
+        if (selectedArchetype != null) {
+          _removeFilter(ref);
+        } else {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return DraggableScrollableSheet(
+                expand: true,
+                initialChildSize: 1.0,
+                builder: (context, scrollController) {
+                  return _ArchetypesFilter(scrollController: scrollController);
+                },
+              );
+            },
+          );
+        }
+      },
+    );
+  }
 }
 
 void _removeFilter(WidgetRef ref) {

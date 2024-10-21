@@ -15,11 +15,25 @@ class CardsRepositoriesImpl extends CardsRepositories {
   Future<List<Cards>> getCardsByPage(
       {int limit = 10, int offset = 0, String? archetype = ''}) {
     return datasource.getCardsByPage(
-        limit: limit, offset: offset, archetype: archetype);
+      limit: limit,
+      offset: offset,
+      archetype: archetype,
+    );
   }
 
   @override
   Future<List<Archetype>> getArchetype() {
     return datasource.getArchetype();
+  }
+
+  @override
+  Future<List<Cards>> getPopularCards({
+    int limit = 10,
+    int offset = 0,
+  }) {
+    return datasource.getBanListCards(
+      limit: limit,
+      offset: offset,
+    );
   }
 }

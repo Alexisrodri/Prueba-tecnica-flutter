@@ -16,37 +16,37 @@ class CardsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Cartas'),
       ),
-      body: Column(
+      body: const Column(
         children: [
-          if (selectedArchetype != null)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Selected Archetype: $selectedArchetype',
-                style: const TextStyle(fontSize: 18),
-              ),
-            ),
-          const Expanded(child: _CardsView()),
+          Expanded(child: _CardsView()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor:
+            selectedArchetype != null ? Colors.red : Colors.lightBlue,
+        icon: Icon(selectedArchetype != null
+            ? Icons.delete_forever
+            : Icons.filter_list_alt),
+        label: Text(selectedArchetype != null ? 'Eliminar filtro' : 'Filtrar'),
         onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return DraggableScrollableSheet(
-                expand: false,
-                initialChildSize: 0.3,
-                minChildSize: 0.1,
-                maxChildSize: 0.8,
-                builder: (context, scrollController) {
-                  return _ArchetypesFilter(scrollController: scrollController);
-                },
-              );
-            },
-          );
+          if (selectedArchetype != null) {
+            _removeFilter(ref);
+          } else {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return DraggableScrollableSheet(
+                  expand: true,
+                  initialChildSize: 1.0,
+                  builder: (context, scrollController) {
+                    return _ArchetypesFilter(
+                        scrollController: scrollController);
+                  },
+                );
+              },
+            );
+          }
         },
-        child: const Icon(Icons.filter_list_alt),
       ),
     );
   }
@@ -60,7 +60,7 @@ class _CardsView extends ConsumerStatefulWidget {
 }
 
 class _CardsViewState extends ConsumerState<_CardsView> {
-  final ScrollController scrollController = ScrollController();
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -68,7 +68,9 @@ class _CardsViewState extends ConsumerState<_CardsView> {
     scrollController.addListener(() {
       if ((scrollController.position.pixels + 400) >=
           scrollController.position.maxScrollExtent) {
-        ref.read(cardsProvider.notifier).loadNextPage();
+        ref
+            .read(cardsProvider(ref.watch(selectedArchetypeProvider)).notifier)
+            .loadNextPage();
       }
     });
   }
@@ -81,7 +83,8 @@ class _CardsViewState extends ConsumerState<_CardsView> {
 
   @override
   Widget build(BuildContext context) {
-    final cardsState = ref.watch(cardsProvider);
+    final selectedArchetype = ref.watch(selectedArchetypeProvider);
+    final cardsState = ref.watch(cardsProvider(selectedArchetype));
 
     return Padding(
       padding: const EdgeInsets.all(15),
@@ -103,6 +106,18 @@ class _CardsViewState extends ConsumerState<_CardsView> {
   }
 }
 
+void updateArchetype(WidgetRef ref, String archetypeName) {
+  ref.read(selectedArchetypeProvider.notifier).state = archetypeName;
+
+  ref.read(cardsProvider(archetypeName).notifier).loadNextPage();
+}
+
+void _removeFilter(WidgetRef ref) {
+  ref.read(selectedArchetypeProvider.notifier).state = null;
+
+  ref.read(cardsProvider(null).notifier).loadNextPage();
+}
+
 class _ArchetypesFilter extends ConsumerWidget {
   final ScrollController scrollController;
 
@@ -111,7 +126,8 @@ class _ArchetypesFilter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final futureArchetypes = ref.read(cardsRepositoryProvider).getArchetype();
-    final selectedArchetype = ref.watch(selectedArchetypeProvider);
+    final selectedArchetype =
+        ref.watch(selectedArchetypeProvider.notifier).state;
 
     return FutureBuilder(
       future: futureArchetypes,
@@ -163,8 +179,8 @@ class _ArchetypesFilter extends ConsumerWidget {
                             ),
                           ),
                           onTap: () {
-                            ref.read(selectedArchetypeProvider.notifier).state =
-                                archetype.archetypeName;
+                            final archetypeName = archetype.archetypeName;
+                            updateArchetype(ref, archetypeName);
 
                             Navigator.pop(context);
                           },

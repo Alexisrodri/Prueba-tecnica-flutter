@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:prueba_tecnica/widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
+// import '../../providers/providers.dart';
+
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final cardsState = ref.watch(cardsProvider(''));
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // CardsSlideshow(cards: cardsState.cards),
             IconButton.outlined(
                 onPressed: () {
                   context.push('/cards');

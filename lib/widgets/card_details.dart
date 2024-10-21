@@ -98,8 +98,6 @@ class CardInfo extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        // const Spacer(),
-        // const SizedBox()
       ],
     );
   }
@@ -125,7 +123,6 @@ class GridInfoCard extends StatelessWidget {
         childAspectRatio: 2,
       ),
       children: [
-        // Tipo
         GridTile(
           header: const Text(
             'Type',

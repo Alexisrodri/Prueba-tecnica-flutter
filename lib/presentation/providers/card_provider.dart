@@ -21,13 +21,12 @@ class CardNotifier extends StateNotifier<CardState> {
   Future<void> loadCard() async {
     try {
       final card = await cardRepository.getCardById(state.id);
-      // print(card);
       state = state.copyWith(
         isLoading: false,
         card: card,
       );
     } catch (e) {
-      print(e);
+      throw Exception();
     }
   }
 }
@@ -35,7 +34,7 @@ class CardNotifier extends StateNotifier<CardState> {
 class CardState {
   final String id;
   final bool isLoading;
-  final Card? card;
+  final Cards? card;
 
   CardState({
     required this.id,
@@ -45,7 +44,7 @@ class CardState {
 
   CardState copyWith({
     String? id,
-    Card? card,
+    Cards? card,
     bool? isLoading,
   }) =>
       CardState(

@@ -15,41 +15,40 @@ class CardsDatasourcesImpl extends CardsDatasource {
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?&num=10&offset=0#
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?id=84962466
+  // https://ygoprodeck.com/api/elastic/card_search.php?&sort=views&num=14&offset=0
 
   @override
-  Future<Card> getCardById(String id) async {
+  Future<Cards> getCardById(String id) async {
     try {
       final response = await dio.get('cardinfo.php?id=$id');
-      // print('response::${response.data}');
       final card = CardMapper.jsonToEntities(response.data);
-      // print('Cardddd::$card');
       return card.map((card) => card).first;
     } on DioException catch (e) {
       if (e.response!.statusCode == 404) throw CardNotFound();
       throw Exception();
     } catch (e) {
-      // print(e);
       throw Exception();
     }
   }
 
   @override
-  Future<List<Card>> getCardsByPage({
+  Future<List<Cards>> getCardsByPage({
     int limit = 10,
     int offset = 0,
     String? archetype,
   }) async {
-    final response = await dio.get('cardinfo.php?num=$limit&offset=$offset'
-        '${archetype != null && archetype.isNotEmpty ? '&archetype=$archetype' : ''}');
+    final url =
+        'cardinfo.php?num=$limit&offset=$offset${archetype != null && archetype.isNotEmpty ? '&archetype=$archetype' : ''}';
 
-    final List<Card> cards = [];
+    final response = await dio.get(url);
+
+    final List<Cards> cards = [];
 
     if (response.data != null && response.data['data'] != null) {
       for (final card in response.data['data']) {
         cards.add(CardMapper.jsonToEntity(card));
       }
     }
-
     return cards;
   }
 
@@ -63,13 +62,11 @@ class CardsDatasourcesImpl extends CardsDatasource {
             (e) => Archetype.fromJson(e),
           )
           .toList();
-      print("archetype::$archetype");
       return archetype;
     } on DioException catch (e) {
       if (e.response!.statusCode == 404) throw CardNotFound();
       throw Exception();
     } catch (e) {
-      print(e);
       throw Exception();
     }
   }

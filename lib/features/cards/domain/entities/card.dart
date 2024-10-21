@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final card = cardFromJson(jsonString);
+//     final cards = cardsFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Card> cardFromJson(String str) =>
-    List<Card>.from(json.decode(str).map((x) => Card.fromJson(x)));
+List<Cards> cardsFromJson(String str) =>
+    List<Cards>.from(json.decode(str).map((x) => Cards.fromJson(x)));
 
-String cardToJson(List<Card> data) =>
+String cardsToJson(List<Cards> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Card {
+class Cards {
   int id;
   String name;
   String type;
@@ -20,7 +20,7 @@ class Card {
   String race;
   String? archetype;
   String ygoprodeckUrl;
-  List<CardSet> cardSets;
+  List<CardSet>? cardSets;
   List<CardImage> cardImages;
   List<CardPrice> cardPrices;
   List<String>? typeline;
@@ -29,7 +29,7 @@ class Card {
   int? level;
   String? attribute;
 
-  Card({
+  Cards({
     required this.id,
     required this.name,
     required this.type,
@@ -39,7 +39,7 @@ class Card {
     required this.race,
     this.archetype,
     required this.ygoprodeckUrl,
-    required this.cardSets,
+    this.cardSets,
     required this.cardImages,
     required this.cardPrices,
     this.typeline,
@@ -49,7 +49,7 @@ class Card {
     this.attribute,
   });
 
-  factory Card.fromJson(Map<String, dynamic> json) => Card(
+  factory Cards.fromJson(Map<String, dynamic> json) => Cards(
         id: json["id"],
         name: json["name"],
         type: json["type"],
@@ -59,8 +59,10 @@ class Card {
         race: json["race"],
         archetype: json["archetype"],
         ygoprodeckUrl: json["ygoprodeck_url"],
-        cardSets: List<CardSet>.from(
-            json["card_sets"].map((x) => CardSet.fromJson(x))),
+        cardSets: json["card_sets"] == null
+            ? []
+            : List<CardSet>.from(
+                json["card_sets"]!.map((x) => CardSet.fromJson(x))),
         cardImages: List<CardImage>.from(
             json["card_images"].map((x) => CardImage.fromJson(x))),
         cardPrices: List<CardPrice>.from(
@@ -84,7 +86,7 @@ class Card {
         "race": race,
         "archetype": archetype,
         "ygoprodeck_url": ygoprodeckUrl,
-        "card_sets": List<dynamic>.from(cardSets.map((x) => x.toJson())),
+        "card_sets": List<dynamic>.from(cardSets!.map((x) => x.toJson())),
         "card_images": List<dynamic>.from(cardImages.map((x) => x.toJson())),
         "card_prices": List<dynamic>.from(cardPrices.map((x) => x.toJson())),
         "typeline":

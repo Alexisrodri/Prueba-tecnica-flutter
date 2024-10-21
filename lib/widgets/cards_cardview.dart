@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_tecnica/features/cards/domain/entities/card.dart'
-    as card_data;
+import 'package:prueba_tecnica/features/cards/domain/entities/card.dart';
 
 class CardsCardview extends StatelessWidget {
-  final card_data.Card card;
+  final Cards card;
 
   const CardsCardview({super.key, required this.card});
 
@@ -25,7 +24,7 @@ class CardsCardview extends StatelessWidget {
 }
 
 class _CardImages extends StatelessWidget {
-  final List<card_data.CardImage> images;
+  final List<CardImage> images;
   const _CardImages({required this.images});
 
   @override

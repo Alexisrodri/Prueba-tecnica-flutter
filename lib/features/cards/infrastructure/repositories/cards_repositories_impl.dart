@@ -27,7 +27,7 @@ class CardsRepositoriesImpl extends CardsRepositories {
   }
 
   @override
-  Future<List<Cards>> getPopularCards({
+  Future<List<Cards>> getBanListCards({
     int limit = 10,
     int offset = 0,
   }) {

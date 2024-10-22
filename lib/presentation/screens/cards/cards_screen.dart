@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
 import 'package:prueba_tecnica/presentation/providers/providers.dart';
-import 'package:prueba_tecnica/widgets/widgets.dart';
+
+import '../../../widgets/widgets.dart';
 
 class CardsScreen extends ConsumerWidget {
   const CardsScreen({super.key});
@@ -11,6 +10,8 @@ class CardsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedArchetype = ref.watch(selectedArchetypeProvider);
+    final cardsState = ref.watch(cardsProvider(selectedArchetype));
+    final cardsNotifier = ref.read(cardsProvider(selectedArchetype).notifier);
 
     return Scaffold(
       backgroundColor: const Color(0xFFC2B4A7),
@@ -19,74 +20,20 @@ class CardsScreen extends ConsumerWidget {
         centerTitle: true,
         backgroundColor: const Color(0xFFC2B4A7),
       ),
-      body: const Column(
+      body: Column(
         children: [
-          Expanded(child: _CardsView()),
+          Expanded(
+              child: CardsView(
+            cards: cardsState.cards,
+            voidCallback: () async {
+              await cardsNotifier.loadNextPage();
+            },
+          )),
         ],
       ),
       floatingActionButton: FilterFAB(selectedArchetype: selectedArchetype),
     );
   }
-}
-
-class _CardsView extends ConsumerStatefulWidget {
-  const _CardsView();
-
-  @override
-  _CardsViewState createState() => _CardsViewState();
-}
-
-class _CardsViewState extends ConsumerState<_CardsView> {
-  ScrollController scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      if ((scrollController.position.pixels + 400) >=
-          scrollController.position.maxScrollExtent) {
-        ref
-            .read(cardsProvider(ref.watch(selectedArchetypeProvider)).notifier)
-            .loadNextPage();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final selectedArchetype = ref.watch(selectedArchetypeProvider);
-    final cardsState = ref.watch(cardsProvider(selectedArchetype));
-
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: MasonryGridView.count(
-        controller: scrollController,
-        crossAxisCount: 2,
-        mainAxisSpacing: 20,
-        crossAxisSpacing: 35,
-        itemCount: cardsState.cards.length,
-        itemBuilder: (context, index) {
-          final card = cardsState.cards[index];
-          return GestureDetector(
-            onTap: () => context.push('/cards/${card.id}'),
-            child: CardsCardview(card: card),
-          );
-        },
-      ),
-    );
-  }
-}
-
-void updateArchetype(WidgetRef ref, String archetypeName) {
-  ref.read(selectedArchetypeProvider.notifier).state = archetypeName;
-
-  ref.read(cardsProvider(archetypeName).notifier).loadNextPage();
 }
 
 class FilterFAB extends ConsumerWidget {
@@ -102,10 +49,18 @@ class FilterFAB extends ConsumerWidget {
     return FloatingActionButton.extended(
       backgroundColor:
           selectedArchetype != null ? Colors.red : Colors.lightBlue,
-      icon: Icon(selectedArchetype != null
-          ? Icons.delete_forever
-          : Icons.filter_list_alt),
-      label: Text(selectedArchetype != null ? 'Eliminar filtro' : 'Filtrar'),
+      icon: Icon(
+        selectedArchetype != null
+            ? Icons.delete_forever
+            : Icons.filter_list_alt,
+        color: Colors.white,
+      ),
+      label: Text(
+        selectedArchetype != null ? 'Eliminar filtro' : 'Filtrar',
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
       onPressed: () {
         if (selectedArchetype != null) {
           _removeFilter(ref);
@@ -126,6 +81,12 @@ class FilterFAB extends ConsumerWidget {
       },
     );
   }
+}
+
+void updateArchetype(WidgetRef ref, String archetypeName) {
+  ref.read(selectedArchetypeProvider.notifier).state = archetypeName;
+
+  ref.read(cardsProvider(archetypeName).notifier).loadNextPage();
 }
 
 void _removeFilter(WidgetRef ref) {
@@ -175,6 +136,7 @@ class _ArchetypesFilter extends ConsumerWidget {
                 Expanded(
                   child: Scrollbar(
                     radius: const Radius.circular(8),
+                    trackVisibility: true,
                     thickness: 8,
                     child: ListView.builder(
                       controller: scrollController,

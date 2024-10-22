@@ -8,7 +8,7 @@ abstract class CardsRepositories {
 
   Future<List<Archetype>> getArchetype();
 
-  Future<List<Cards>> getPopularCards({
+  Future<List<Cards>> getBanListCards({
     int limit = 10,
     int offset = 0,
   });

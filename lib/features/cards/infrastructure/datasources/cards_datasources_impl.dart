@@ -15,6 +15,7 @@ class CardsDatasourcesImpl extends CardsDatasource {
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?&num=10&offset=0#
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes
   // https://db.ygoprodeck.com/api/v7/cardinfo.php?id=84962466
+  // https://db.ygoprodeck.com/api/v7/cardinfo.php?banlist=tcg&num=10&offset=0
 
   @override
   Future<Cards> getCardById(String id) async {
@@ -76,7 +77,7 @@ class CardsDatasourcesImpl extends CardsDatasource {
     int offset = 0,
   }) async {
     try {
-      final url = 'cardinfo.php?sort=view&num=$limit&offset=$offset}';
+      final url = 'cardinfo.php?banlist=tcg&num=$limit&offset=$offset';
 
       final response = await dio.get(url);
       final List<Cards> cards = [];
@@ -85,13 +86,18 @@ class CardsDatasourcesImpl extends CardsDatasource {
         for (final card in response.data['data']) {
           cards.add(CardMapper.jsonToEntity(card));
         }
+      } else {
+        throw Exception('La respuesta no contiene datos válidos');
       }
+
       return cards;
     } on DioException catch (e) {
-      if (e.response!.statusCode == 404) throw CardNotFound();
-      throw Exception();
+      if (e.response != null && e.response!.statusCode == 404) {
+        throw CardNotFound(); // Si no se encuentra el recurso
+      }
+      throw Exception('Error al obtener las cartas de la lista de baneadas');
     } catch (e) {
-      throw Exception();
+      throw Exception('Error inesperado al obtener las cartas');
     }
   }
 }

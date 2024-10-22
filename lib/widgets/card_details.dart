@@ -13,24 +13,32 @@ class CardDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: SizedBox(
-                height: 350,
-                width: 350,
-                child: _ImageGallery(
-                    images: cardState.card!.cardImages.first.imageUrl),
+    return Scrollbar(
+      thickness: 8,
+      trackVisibility: true,
+      radius: const Radius.circular(10),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: SizedBox(
+                  height: 350,
+                  width: 350,
+                  child: _ImageGallery(
+                    images: cardState.card!.cardImages.first.imageUrl,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            CardInfo(cardState: cardState),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 20),
+              CardInfo(
+                cardState: cardState,
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -169,13 +177,15 @@ class GridInfoCard extends StatelessWidget {
                   },
                 ),
                 const SizedBox(width: 5),
-                Text(
-                  cardState.card!.archetype!,
-                  softWrap: true,
-                  overflow: TextOverflow.visible,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
+                Expanded(
+                  child: Text(
+                    cardState.card!.archetype!,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ),
               ],
@@ -211,9 +221,6 @@ class GridInfoCard extends StatelessWidget {
           GridTile(
             header: const Text(
               'Attribute',
-              style: TextStyle(
-                color: Colors.white,
-              ),
             ),
             child: Row(
               children: [
@@ -239,7 +246,6 @@ class GridInfoCard extends StatelessWidget {
           GridTile(
             header: const Text(
               'Level/Rank',
-              style: TextStyle(color: Colors.white),
             ),
             child: Row(
               children: [
@@ -265,7 +271,6 @@ class GridInfoCard extends StatelessWidget {
           GridTile(
               header: const Text(
                 'ATK',
-                style: TextStyle(color: Colors.white),
               ),
               child: Row(
                 children: [
@@ -280,7 +285,6 @@ class GridInfoCard extends StatelessWidget {
           GridTile(
             header: const Text(
               'DEF',
-              style: TextStyle(color: Colors.white),
             ),
             child: Row(
               children: [

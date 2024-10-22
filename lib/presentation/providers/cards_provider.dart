@@ -19,6 +19,7 @@ class CardsNotifier extends StateNotifier<CardsState> {
     required String? archetype,
   }) : super(CardsState(archetype: archetype ?? '')) {
     loadNextPage();
+    loadCardsBand();
   }
 
   Future<void> loadNextPage() async {
@@ -48,7 +49,35 @@ class CardsNotifier extends StateNotifier<CardsState> {
         cards: [...state.cards, ...cards],
       );
     } catch (e) {
-      state = state.copyWith(error: e.toString(), isLoading: false);
+      state = state.copyWith(
+        error: e.toString(),
+        isLoading: false,
+      );
+    }
+  }
+
+  Future<void> loadCardsBand() async {
+    try {
+      if (state.isLoadingBan) return;
+      state = state.copyWith(isLoadingBan: true);
+
+      final bannedCards = await cardsRepository.getBanListCards(
+        limit: state.limit,
+        offset: state.offsetBan,
+      );
+
+      if (!mounted) return;
+
+      state = state.copyWith(
+        isLoadingBan: false,
+        offsetBan: state.offset + 10,
+        bannedCards: [...state.bannedCards, ...bannedCards],
+      );
+    } catch (e) {
+      state = state.copyWith(
+        error: e.toString(),
+        isLoadingBan: false,
+      );
     }
   }
 
@@ -69,9 +98,12 @@ class CardsState {
   final bool isLastPage;
   final int limit;
   final int offset;
+  final int offsetBan;
   final String? archetype;
   final bool isLoading;
+  final bool isLoadingBan;
   final List<Cards> cards;
+  final List<Cards> bannedCards;
   final String? error;
 
   CardsState({
@@ -79,8 +111,11 @@ class CardsState {
     required this.archetype,
     this.limit = 10,
     this.offset = 0,
+    this.offsetBan = 0,
     this.isLoading = false,
+    this.isLoadingBan = false,
     this.cards = const [],
+    this.bannedCards = const [],
     this.error,
   });
 
@@ -89,8 +124,11 @@ class CardsState {
     int? limit,
     String? archetype,
     int? offset,
+    int? offsetBan,
     bool? isLoading,
+    bool? isLoadingBan,
     List<Cards>? cards,
+    List<Cards>? bannedCards,
     String? error,
   }) {
     return CardsState(
@@ -98,8 +136,11 @@ class CardsState {
       limit: limit ?? this.limit,
       archetype: archetype ?? this.archetype,
       offset: offset ?? this.offset,
+      offsetBan: offsetBan ?? this.offsetBan,
       isLoading: isLoading ?? this.isLoading,
+      isLoadingBan: isLoadingBan ?? this.isLoadingBan,
       cards: cards ?? this.cards,
+      bannedCards: bannedCards ?? this.bannedCards,
       error: error ?? this.error,
     );
   }

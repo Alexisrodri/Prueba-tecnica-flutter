@@ -1,10 +1,24 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/config.dart';
 
 void main() {
-  runApp(const ProviderScope(
-    child: MainApp(),
+  runApp(ProviderScope(
+    child: DevicePreview(
+      backgroundColor: Colors.blueAccent,
+      tools: const [
+        DeviceSection(
+          orientation: false,
+        ),
+        SystemSection(
+          locale: false,
+        ),
+        // AccessibilitySection(),
+        SettingsSection()
+      ],
+      builder: (context) => const MainApp(),
+    ),
   ));
 }
 
